@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <title>Happy Birthday, Joice! 🎂</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -373,6 +374,24 @@
   .ig-btn { background: linear-gradient(45deg, #f9ce34, #ee2a7b 50%, #6228d7); box-shadow: 0 8px 20px rgba(238,42,123,.4); }
   .wa-btn:hover, .ig-btn:hover { transform: scale(1.05); }
 
+  /* ==== QR LOVE ==== */
+  .qr-card { text-align: center; background: linear-gradient(135deg, rgba(255,107,157,.08), rgba(192,132,252,.12)); border: 2px dashed rgba(234,107,156,.4); border-radius: 24px; padding: 34px 20px 26px; max-width: 640px; margin: 0 auto; }
+  .qr-hint { color: var(--pink-dark); font-weight: 700; font-size: 1.02rem; margin-top: 6px; letter-spacing: .3px; }
+  .qr-note { color: var(--plum); font-size: .88rem; margin-top: 6px; opacity: .8; }
+  .heart-frame { position: relative; width: 250px; height: 220px; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; }
+  .heart-shape { position: absolute; width: 170px; height: 170px; background: linear-gradient(135deg, #ff9dc4, #e0538a); transform: rotate(-45deg); border-radius: 14px; box-shadow: 0 14px 34px rgba(224,83,138,.45); }
+  .heart-shape::before, .heart-shape::after { content: ''; position: absolute; width: 170px; height: 170px; border-radius: 50%; background: inherit; }
+  .heart-shape::before { top: -85px; left: 0; }
+  .heart-shape::after { left: 85px; top: 0; }
+  .heart-shape::after { background: linear-gradient(90deg, #e0538a, #ff8fbd); }
+  .heart-beat { animation: heartBeat 1.7s ease-in-out infinite; }
+  @keyframes heartBeat { 0%,100% { transform: rotate(-45deg) scale(1); } 12% { transform: rotate(-45deg) scale(1.06); } 24% { transform: rotate(-45deg) scale(1); } 36% { transform: rotate(-45deg) scale(1.04); } 48% { transform: rotate(-45deg) scale(1); } }
+  .qr-box { position: relative; z-index: 2; background: #fff; border-radius: 18px; padding: 12px; line-height: 0; box-shadow: 0 10px 28px rgba(224,83,138,.4); border: 3px solid #fff; }
+  .qr-box canvas, .qr-box img, .qr-box table { border-radius: 8px; }
+  .qr-box img { width: 100% !important; max-width: 170px; height: auto !important; }
+  .qr-float { position: absolute; z-index: 3; font-size: 1.5rem; animation: qrFloat 3s ease-in-out infinite; pointer-events: none; filter: drop-shadow(0 3px 6px rgba(224,83,138,.35)); }
+  @keyframes qrFloat { 0%,100% { transform: translateY(0) rotate(-6deg); } 50% { transform: translateY(-10px) rotate(6deg); } }
+
   /* ==== LIGHTBOX ==== */
   #lightbox { position: fixed; inset: 0; z-index: 200; background: rgba(25,10,25,.92); display: none; align-items: center; justify-content: center; padding: 20px; }
   #lightbox.open { display: flex; }
@@ -602,6 +621,23 @@
         <a class="ig-btn" id="ig-link" href="#" target="_blank" rel="noopener">📸 Chat Instagram Wilson</a>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ============ QR LOVE ============ -->
+<section class="section reveal" id="qr-section">
+  <h2 class="section-title">📲 Scan Buat Joice 💗</h2>
+  <div class="qr-card">
+    <div class="heart-frame">
+      <div class="heart-shape heart-beat"></div>
+      <span class="qr-float" style="top:10px; left:14px; animation-delay:.2s">💗</span>
+      <span class="qr-float" style="top:4px; right:22px; animation-delay:.8s">🩷</span>
+      <span class="qr-float" style="bottom:34px; left:26px; animation-delay:1.4s">❤️</span>
+      <span class="qr-float" style="bottom:26px; right:12px; animation-delay:2s">✨</span>
+      <div class="qr-box" id="qr-box"></div>
+    </div>
+    <p class="qr-hint">Scan buat buka surprise-nya 🎀</p>
+    <p class="qr-note">Arahin kamera HP ke QR di atas, langsung kebuka websitenya.</p>
   </div>
 </section>
 
@@ -1029,6 +1065,17 @@
   else waLink.href = 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent('Halo Wilson! Ini Joice 🎀');
   if (!(IG_USERNAME && IG_USERNAME !== 'ig_username')) igLink.style.display = 'none';
   else igLink.href = 'https://ig.me/m/' + IG_USERNAME;
+
+  /* ================= QR LOVE ================= */
+  const QR_TEXT = 'https://wilsonmarbun231210-afk.github.io/ultah-joice/';
+  const qrBox = $('#qr-box');
+  if (qrBox && typeof QRCode !== 'undefined') {
+    try {
+      new QRCode(qrBox, { text: QR_TEXT, width: 160, height: 160, colorDark: '#c6407f', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M });
+    } catch (err) {
+      qrBox.innerHTML = '<span style="color:#c6407f;font-weight:700;line-height:1.5">📲\nScan dari browser aja\n' + QR_TEXT + '</span>';
+    }
+  }
 
   /* Typewriter big title */
   (function(){
